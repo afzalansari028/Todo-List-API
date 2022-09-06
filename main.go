@@ -16,11 +16,11 @@ func main() {
 
 	r.Use(cors.Default()) //it will allow all origin
 
-	r.GET("/", Test)
+	// r.GET("/", Test)
 	routes.TodoRouters(r)
 	log.Fatal(r.Run())
 }
 
-func Test(c *gin.Context) {
-	c.JSON(200, gin.H{"message": "Welcome to todo Backend API"})
-}
+// func Test(c *gin.Context) {
+// 	c.JSON(200, gin.H{"message": "Welcome to todo Backend API"})
+// }

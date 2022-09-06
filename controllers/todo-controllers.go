@@ -106,5 +106,9 @@ func DeleteOneTodo(c *gin.Context) {
 	id := c.Param("id")
 	db.Query("DELETE FROM todo WHERE id = ?", id)
 	c.JSON(http.StatusOK, "Todo removed of given id")
+}
 
+//test API
+func Test(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "Welcome to todo Backend API"})
 }
