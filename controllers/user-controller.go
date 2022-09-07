@@ -19,8 +19,8 @@ func RegisterUser(c *gin.Context) {
 
 	var user models.User
 	json.NewDecoder(c.Request.Body).Decode(&user)
-	fmt.Println(user.Password)
-	fmt.Println(user.UserEmail)
+	// fmt.Println(user.Password)
+	// fmt.Println(user.UserEmail)
 	//validation for empty user
 	if user.UserName == "" && user.UserEmail == "" && user.Password == "" {
 		c.JSON(http.StatusNotAcceptable, "empty fields")
@@ -29,12 +29,13 @@ func RegisterUser(c *gin.Context) {
 
 	db := database.SetupDB()
 	// validation for duplicate user
-	rows, err := db.Query("SELECT * FROM user")
+	rows, err := db.Query("SELECT * FROM users")
 	if err != nil {
 		log.Fatal(err)
 	}
 	var usersFromDb []models.User
 	for rows.Next() {
+		// fmt.Println("for loop....")
 		var userid int
 		var username string
 		var email string
@@ -46,6 +47,7 @@ func RegisterUser(c *gin.Context) {
 		}
 
 		usersFromDb = append(usersFromDb, models.User{UserId: userid, UserName: username, UserEmail: email, RetypePassword: retypepassword})
+		fmt.Println(usersFromDb)
 	}
 	for i := 0; i < len(usersFromDb); i++ {
 		if usersFromDb[i].UserEmail == user.UserEmail {
@@ -60,11 +62,12 @@ func RegisterUser(c *gin.Context) {
 		return
 	}
 	//inserting user to DB
-	db.Query("INSERT INTO user(user_name,user_email,user_password,retype_password) VALUES(?,?,?,?)", user.UserName, user.UserEmail, user.Password, user.RetypePassword)
+	db.Query("INSERT INTO public.users(user_name,user_email,user_password,retype_password) VALUES($1,$2,$3,$4);", user.UserName, user.UserEmail, user.Password, user.RetypePassword)
 	c.JSON(200, "user registered!")
 }
 
 func LoginUserHandler(c *gin.Context) {
+	fmt.Println("Login controller...")
 	c.Writer.Header().Set("Content-Type", "applicatoin/json")
 	var userLogIn models.LoginUser
 	json.NewDecoder(c.Request.Body).Decode(&userLogIn)
@@ -74,7 +77,7 @@ func LoginUserHandler(c *gin.Context) {
 	email := userLogIn.Email
 	pswd := userLogIn.Password
 
-	rows, err := db.Query("SELECT user_email,user_password FROM user where user_email=? && user_password=?", email, pswd)
+	rows, err := db.Query("SELECT user_email,user_password FROM users where user_email=$1 AND user_password=$2", email, pswd)
 	if err != nil {
 		log.Fatal(err)
 	}

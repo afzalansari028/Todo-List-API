@@ -22,11 +22,11 @@ func GetAllTodo(c *gin.Context) {
 
 	//id get from login email
 	var sessionEmail = Get()
-	var id int
-	db.QueryRow("SELECT user_id from user WHERE user_email = ?", sessionEmail).Scan(&id)
-	fmt.Printf("Id is %d", id)
+	var userid int
+	db.QueryRow("SELECT user_id from users WHERE user_email = $1", sessionEmail).Scan(&userid)
+	fmt.Printf("Id is %d", userid)
 
-	rows, _ := db.Query("SELECT title,body,id FROM todo WHERE user_id = ?", id)
+	rows, _ := db.Query("SELECT title,body,id FROM todo WHERE user_id = $1", userid)
 
 	for rows.Next() {
 		var title string
@@ -41,14 +41,12 @@ func GetAllTodo(c *gin.Context) {
 
 	fmt.Println(todo)
 	c.JSON(200, todo)
-
 }
 
 // POST REQUEST
 func AddOneTodo(c *gin.Context) {
 	fmt.Println("Add one todo")
 	c.Writer.Header().Set("Content-Type", "application/json")
-	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	var todo models.Todo
 	json.NewDecoder(c.Request.Body).Decode(&todo)
 
@@ -66,15 +64,16 @@ func AddOneTodo(c *gin.Context) {
 	}
 	var todosFromDb []models.Todo
 	for rows.Next() {
+		var id int
 		var title string
 		var body string
-		var id int
 		var userid int
-		err := rows.Scan(&title, &body, &id, &userid)
+		err := rows.Scan(&id, &title, &body, &userid)
 		if err != nil {
 			log.Fatal(err)
 		}
-		todosFromDb = append(todosFromDb, models.Todo{Title: title, Body: body, Id: id, User: &models.User{UserId: userid}})
+		todosFromDb = append(todosFromDb, models.Todo{Id: id, Title: title, Body: body, User: &models.User{UserId: userid}})
+		fmt.Println(todosFromDb)
 	}
 	fmt.Println(todosFromDb)
 	for i := 0; i < len(todosFromDb); i++ {
@@ -85,11 +84,11 @@ func AddOneTodo(c *gin.Context) {
 	}
 
 	var sessionEmail = Get()
-	var id int
-	db.QueryRow("SELECT user_id from user WHERE user_email = ?", sessionEmail).Scan(&id)
-	// fmt.Println(id)
-	fmt.Println(todo.Title, todo.Body, id)
-	db.Query("INSERT INTO todo(title,body,user_id) VALUES(?,?,?)", todo.Title, todo.Body, id)
+	var userid int
+	db.QueryRow("SELECT user_id from users WHERE user_email = $1", sessionEmail).Scan(&userid)
+	// fmt.Println(userid)
+	fmt.Println(todo.Title, todo.Body, userid)
+	db.Query("INSERT INTO todo(title,body,user_id) VALUES($1,$2,$3)", todo.Title, todo.Body, userid)
 	c.JSON(200, "Todo added...")
 }
 
@@ -104,7 +103,7 @@ func DeleteOneTodo(c *gin.Context) {
 
 	db := database.SetupDB()
 	id := c.Param("id")
-	db.Query("DELETE FROM todo WHERE id = ?", id)
+	db.Query("DELETE FROM todo WHERE id = $1", id)
 	c.JSON(http.StatusOK, "Todo removed of given id")
 }
 
