@@ -16,4 +16,6 @@ func TodoRouters(router *gin.Engine) {
 	// user routers
 	router.POST("/register", controllers.RegisterUser)
 	router.POST("/login", controllers.LoginUserHandler)
+
+	router.GET("/all", controllers.GetAllList)
 }

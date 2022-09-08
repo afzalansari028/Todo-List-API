@@ -16,6 +16,14 @@ const (
 	dbname   = "dd8313ifetngdm"
 )
 
+// const (
+// 	host     = "localhost"
+// 	port     = 5432
+// 	user     = "postgres"
+// 	password = "king"
+// 	dbname   = "todo-appdb"
+// )
+
 // DB set up
 func SetupDB() *sql.DB {
 	//connection

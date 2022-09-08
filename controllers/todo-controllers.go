@@ -111,3 +111,27 @@ func DeleteOneTodo(c *gin.Context) {
 func Test(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Welcome to todo Backend API"})
 }
+
+// just for testing
+func GetAllList(c *gin.Context) {
+	fmt.Println("Get All list")
+	c.Writer.Header().Set("Content-Type", "application/json")
+	var todo []models.Todo
+	// todo = append(todo, models.Todo{Title: "Coding", Body: "Basic Code practice", Id: 10})
+	db := database.SetupDB()
+	//id get from login email
+	rows, _ := db.Query("SELECT * FROM todo")
+	for rows.Next() {
+		var id int
+		var title string
+		var body string
+		var userid int
+		err := rows.Scan(&id, &title, &body, &userid)
+		if err != nil {
+			log.Fatal(err)
+		}
+		todo = append(todo, models.Todo{Title: title, Body: body, Id: id, User: &models.User{UserId: userid}})
+	}
+	fmt.Println(todo)
+	c.JSON(200, todo)
+}
