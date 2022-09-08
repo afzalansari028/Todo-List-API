@@ -9,11 +9,11 @@ import (
 )
 
 const (
-	host     = "localhost"
+	host     = "ec2-35-170-146-54.compute-1.amazonaws.com"
 	port     = 5432
-	user     = "postgres"
-	password = "king"
-	dbname   = "todo-appdb"
+	user     = "ptsovhcdqfhwpw"
+	password = "295c2f83522f0448515704e0f72615a92c1bd4cb57ee44ee5e785d0682ac57ad"
+	dbname   = "dd8313ifetngdm"
 )
 
 // DB set up
