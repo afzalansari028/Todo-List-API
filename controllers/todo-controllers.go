@@ -120,7 +120,10 @@ func GetAllList(c *gin.Context) {
 	// todo = append(todo, models.Todo{Title: "Coding", Body: "Basic Code practice", Id: 10})
 	db := database.SetupDB()
 	//id get from login email
-	rows, _ := db.Query("SELECT * FROM todo")
+	rows, err := db.Query("SELECT * FROM todo")
+	if err != nil {
+		log.Fatal(err)
+	}
 	for rows.Next() {
 		var id int
 		var title string
