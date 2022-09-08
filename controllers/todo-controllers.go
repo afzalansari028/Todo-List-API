@@ -118,9 +118,12 @@ func GetAllList(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	var todo []models.Todo
 	// todo = append(todo, models.Todo{Title: "Coding", Body: "Basic Code practice", Id: 10})
+	log.Print("Before db")
 	db := database.SetupDB()
+	log.Print("After db")
 	//id get from login email
 	rows, err := db.Query("SELECT * FROM todo")
+	log.Print("After query executed")
 	if err != nil {
 		log.Fatal(err)
 	}
