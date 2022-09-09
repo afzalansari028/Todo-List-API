@@ -3,7 +3,6 @@ package database
 import (
 	"database/sql"
 	"log"
-	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -31,7 +30,7 @@ func SetupDB() *sql.DB {
 
 	//open database
 	// db, err := sql.Open("postgres", "host=localhost port=5432 user=postgres password=king dbname=todo-appdb sslmode=disable")
-	db, err := sql.Open("postgres", os.Getenv("ec2-35-170-146-54.compute-1.amazonaws.com"))
+	db, err := sql.Open("postgres", "host=ec2-35-170-146-54.compute-1.amazonaws.com port=5432 user=ptsovhcdqfhwpw password=295c2f83522f0448515704e0f72615a92c1bd4cb57ee44ee5e785d0682ac57ad dbname=dd8313ifetngdm sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
