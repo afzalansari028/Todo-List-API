@@ -96,8 +96,8 @@ func AddOneTodo(c *gin.Context) {
 // DELETE REQUEST
 func DeleteOneTodo(c *gin.Context) {
 	fmt.Println("Delete One todo")
-	c.Writer.Header().Set("Content-type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Content-type", "application/json")
 
 	var todo models.Todo
 	json.NewDecoder(c.Request.Body).Decode(&todo)
