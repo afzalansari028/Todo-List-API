@@ -16,7 +16,7 @@ var Emailafterlogin string
 func RegisterUser(c *gin.Context) {
 	fmt.Println("Register user")
 	c.Writer.Header().Set("Content-Type", "applicatiom/json")
-
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	var user models.User
 	json.NewDecoder(c.Request.Body).Decode(&user)
 	// fmt.Println(user.Password)
@@ -69,6 +69,7 @@ func RegisterUser(c *gin.Context) {
 func LoginUserHandler(c *gin.Context) {
 	fmt.Println("Login controller...")
 	c.Writer.Header().Set("Content-Type", "applicatoin/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	var userLogIn models.LoginUser
 	json.NewDecoder(c.Request.Body).Decode(&userLogIn)
 
