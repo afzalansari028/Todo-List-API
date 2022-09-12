@@ -39,8 +39,7 @@ func GetAllTodo(c *gin.Context) {
 		}
 		todo = append(todo, models.Todo{Title: title, Body: body, Id: id})
 	}
-
-	fmt.Println(todo)
+	// fmt.Println(todo)
 	c.JSON(200, todo)
 }
 
@@ -107,6 +106,7 @@ func DeleteOneTodo(c *gin.Context) {
 	db := database.SetupDB()
 	id := c.Param("id")
 	db.Query("DELETE FROM todo WHERE id = $1", id)
+	log.Print("todo removed of id :", id)
 	c.JSON(http.StatusOK, "Todo removed of given id")
 }
 
