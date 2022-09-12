@@ -15,6 +15,7 @@ import (
 func GetAllTodo(c *gin.Context) {
 	fmt.Println("Get All todo list")
 	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 
 	var todo []models.Todo
 	// todo = append(todo, models.Todo{Title: "Coding", Body: "Basic Code practice", Id: 10})
@@ -47,6 +48,7 @@ func GetAllTodo(c *gin.Context) {
 func AddOneTodo(c *gin.Context) {
 	fmt.Println("Add one todo")
 	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	var todo models.Todo
 	json.NewDecoder(c.Request.Body).Decode(&todo)
 
@@ -96,6 +98,7 @@ func AddOneTodo(c *gin.Context) {
 func DeleteOneTodo(c *gin.Context) {
 	fmt.Println("Delete One todo")
 	c.Writer.Header().Set("Content-type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 
 	var todo models.Todo
 	json.NewDecoder(c.Request.Body).Decode(&todo)
@@ -116,6 +119,7 @@ func Test(c *gin.Context) {
 func GetAllList(c *gin.Context) {
 	fmt.Println("Get All list")
 	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	var todo []models.Todo
 	// todo = append(todo, models.Todo{Title: "Coding", Body: "Basic Code practice", Id: 10})
 	log.Print("Before db")
