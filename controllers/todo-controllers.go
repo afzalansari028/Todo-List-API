@@ -142,6 +142,6 @@ func GetAllList(c *gin.Context) {
 		}
 		todo = append(todo, models.Todo{Title: title, Body: body, Id: id, User: &models.User{UserId: userid}})
 	}
-	fmt.Println(todo)
+	log.Print(todo)
 	c.JSON(200, todo)
 }
