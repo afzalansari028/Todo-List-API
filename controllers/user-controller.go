@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var Emailafterlogin string
+var EmailafterloginFromDb string
 
 func RegisterUser(c *gin.Context) {
 	fmt.Println("Register user")
@@ -93,7 +93,7 @@ func LoginUserHandler(c *gin.Context) {
 		emailAndPwd = models.LoginUser{Email: email, Password: password}
 	}
 
-	Emailafterlogin = userLogIn.Email
+	EmailafterloginFromDb = emailAndPwd.Email
 
 	// fmt.Println("from db")
 	// fmt.Println(emailAndPwd)
@@ -106,7 +106,7 @@ func LoginUserHandler(c *gin.Context) {
 	}
 }
 
-func Get() string {
-	var val = Emailafterlogin
+func GetLoggedInEmail() string {
+	var val = EmailafterloginFromDb
 	return val
 }

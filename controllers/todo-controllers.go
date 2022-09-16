@@ -22,7 +22,7 @@ func GetAllTodo(c *gin.Context) {
 	db := database.SetupDB()
 
 	//id get from login email
-	var sessionEmail = Get()
+	var sessionEmail = GetLoggedInEmail()
 	var userid int
 	db.QueryRow("SELECT user_id from users WHERE user_email = $1", sessionEmail).Scan(&userid)
 	fmt.Printf("Id is %d", userid)
@@ -84,7 +84,7 @@ func AddOneTodo(c *gin.Context) {
 		}
 	}
 
-	var sessionEmail = Get()
+	var sessionEmail = GetLoggedInEmail()
 	var userid int
 	db.QueryRow("SELECT user_id from users WHERE user_email = $1", sessionEmail).Scan(&userid)
 	// fmt.Println(userid)
